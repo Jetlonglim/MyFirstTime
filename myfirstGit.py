@@ -5,7 +5,7 @@ window = tk.Tk()
 
 # Set the window title
 window.title("Simple Tkinter Window")
-print('hello world!!')
+
 # Set the window dimensions
 window.geometry("400x300")
 
