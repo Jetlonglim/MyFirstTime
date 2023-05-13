@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 # Create the main application window
 window = tk.Tk()
@@ -18,16 +19,17 @@ def show_frame1():
     frame4.pack_forget() # Hide frame 4
     frame1.pack()  # Show frame 1
     
-# Function to switch to Page 2
+# Function to switch to Page 2(Login)
 def show_frame2():
     frame1.pack_forget()  # Hide frame 1
     frame2.pack()  # Show frame 2
 
-#Function to switch to Page 3 
+#Function to switch to Page 3(Register)
 def show_frame3():
     frame1.pack_forget() #Hide frame 3
     frame3.pack() # Show frame 3
 
+#Function switch to Page 4(Admin)
 def show_frame4():
     frame1.pack_forget() #Hide frame 4
     frame4.pack() #Show frame 4
@@ -55,6 +57,7 @@ button3 = tk.Button(frame3, text="Back", command=show_frame1)
 button3.pack()
 
 # Page 4 content
+
 label4 = tk.Label(frame4, text="Admin")
 label4.pack()
 button4 = tk.Button(frame4, text="Back", command=show_frame1)
