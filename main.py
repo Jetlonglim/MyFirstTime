@@ -1,6 +1,6 @@
 def load_users():
     try:
-        with open("users.txt", "r") as file:
+        with open("renters.txt", "r") as file:
             lines = file.readlines()
             users = dict(line.strip().split(":") for line in lines)
             return users
@@ -9,7 +9,7 @@ def load_users():
 
 # Function to save user data to file
 def save_users(users):
-    with open("users.txt", "w") as file:
+    with open("renters.txt", "w") as file:
         lines = [f"{username}:{password}\n" for username, password in users.items()]
         file.writelines(lines)
 
@@ -38,17 +38,19 @@ def Login():
 
 def Register():
     newuser=input('Enter new username: ')
-    if newuser in renter:
+    if newuser in users:
         print('Username already taken')
         return
     newpass=input('Enter new pass: ')
     confirm_newpass=input('Enter confirm pass: ')
     if newpass==confirm_newpass:
-        renter[newuser]=newpass
+        users[newuser]=newpass
+        save_users(users)
         print('Registration Successful')
 
 
 def Admin():
     print('Admin')
 
+users=load_users()
 menu()
