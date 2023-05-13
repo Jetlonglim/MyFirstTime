@@ -48,9 +48,14 @@ def Register():
         save_users(users)
         print('Registration Successful')
 
-
 def Admin():
-    print('Admin')
+    adminname=input('Enter Admin name: ')
+    adminpass=input('Enter password: ')
+    if adminname=='admin' and adminpass=='admin123':
+        print('Welcome back Admin')
+    else:
+        print("Wrong pass or name")
+        return()
 
 users=load_users()
 menu()
