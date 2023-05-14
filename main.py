@@ -32,6 +32,12 @@ def Login():
     password1=input("Enter Password:")
     if username1 in users and users[username1]==password1:
         print('Login Successful')
+        change_password = input("Do you want to change your password? (Y/N): ")
+        if change_password.upper() == "Y":
+            new_password = input("Enter new password: ")
+            users[username1] = new_password
+            save_users(users)
+            print("Password changed successfully!")
     else:
         print('Incorrect username or password')
 

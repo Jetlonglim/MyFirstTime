@@ -1,1 +1,1 @@
-# MyFirstTime Hi my name is Jie long
+# MyFirstTime Hi This is Rental Movie Theatre python project
