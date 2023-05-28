@@ -1,0 +1,7 @@
+Monday:8am - 10pm,
+Tuesday: 8am - 10pm,
+Wednesday: 8am - 10pm,
+Thursday: 8am - 10pm,
+Friday: 8am - 10pm,
+Saturday: 8am - 6pm,
+Sunday: Closed

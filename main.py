@@ -32,6 +32,11 @@ def Login():
     password1=input("Enter Password:")
     if username1 in users and users[username1]==password1:
         print('Login Successful')
+        Renter_main_page(username1)
+    else:
+        print('Incorrect username or password')
+
+def Renter_main_page(username1):
         print('Please choose an option to continue: ')
         print('1. Create Booking')
         print('2. View Timeslot')
@@ -41,6 +46,8 @@ def Login():
         choice=int(input("Enter your choice: "))
         if choice==1:
             create_booking()
+        elif choice==2:
+            view_timeslot()
         elif choice==3:
             change_password=str(input('Do you want to change password? (Y/N): '))
             if change_password.upper()=='Y':
@@ -51,10 +58,7 @@ def Login():
             else:
                 print('Invalid option. Please try again')
                 return
-    else:
-        print('Incorrect username or password')
-
-
+            
 def Register():
     newuser=input('Enter new username: ')
     if newuser in users:
@@ -155,6 +159,15 @@ def create_booking():
         print("Back to the main page")
     else:
         print('Invalid. Try again')
+
+def view_timeslot():
+    try:
+        with open("timeslots.txt", "r") as file:
+            timeslots = file.read()
+            print(timeslots)
+    except FileNotFoundError:
+        print("Timeslot data not found.")
+        return
 
 
 users=load_users()
