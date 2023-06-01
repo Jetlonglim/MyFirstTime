@@ -13,6 +13,9 @@ def save_users(users):
         lines = [f"{username}:{password}\n" for username, password in users.items()]
         file.writelines(lines)
 
+def save_booking(booking_details):
+    with open("booking.txt", "a") as file:
+        file.write(f"{booking_details}\n")
 
 def menu():
     print("Hi, Choose the option to continue:")
@@ -148,6 +151,7 @@ def date(info, hall_type, time_slot):
     print(f'Hall Type: {hall_type}')
     print(f'Time Slot: {time_slot}')
     print(f'Date: {date_day}')
+    save_booking(f'Hall Type: {hall_type}, Time Slot: {time_slot}, Date: {date_day}')
 
 def create_booking():
     info = ['Normal', 'Premium']
