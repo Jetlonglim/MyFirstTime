@@ -211,9 +211,44 @@ def change_booking(username1):
     booking_num = int(input("Enter the booking number you want to change: "))
     if booking_num > 0 and booking_num <= len(user_bookings):
         booking_index = user_bookings[booking_num - 1]
-        hall_type = input("Enter new hall type (Normal/Premium): ")
-        time_slot = input("Enter new time slot (10am-12pm, 12pm-2pm, 2pm-4pm, 4pm-6pm, 6pm-8pm): ")
-        date_day = input("Enter new date (Monday, Tuesday, Wednesday, Thursday, Friday): ")
+        hall_change = int(input("Enter new hall type ([1]Normal/[2]Premium): "))
+        if hall_change==1:
+            hall_type='Normal'
+        elif hall_change==2:
+            hall_type='Premium'
+        else:
+            print('Invalid')
+            Renter_main_page(username1)
+            
+        time_change = int(input("Enter new time slot ([1]10am-12pm, [2]12pm-2pm, [3]2pm-4pm, [4]4pm-6pm, [5]6pm-8pm): "))
+        if time_change==1:
+            time_slot='10am-12pm'
+        elif time_change==2:
+            time_slot='12pm-2pm'
+        elif time_change==3:
+            time_slot='2pm-4pm'
+        elif time_change==4:
+            time_slot='4pm-6pm'
+        elif time_change==5:
+            time_slot='6pm-8pm'
+        else:
+            print('Invalid')
+            Renter_main_page(username1)
+            
+        date_change = int(input("Enter new date ([1]Monday, [2]Tuesday, [3]Wednesday, [4]Thursday, [5]Friday): "))
+        if date_change==1:
+            date_day='Monday'
+        elif date_change==2:
+            date_day='Tuesday'
+        elif date_change==3:
+            date_day='Wednesday'
+        elif date_change==4:
+            date_day='Thursday'
+        elif date_change==5:
+            date_day='Friday'
+        else:
+            print('Invalid')
+            Renter_main_page(username1)
 
         bookings[booking_index+1] = f"Hall Type: {hall_type}\n"
         bookings[booking_index+2] = f"Time Slot: {time_slot}\n"
@@ -223,8 +258,10 @@ def change_booking(username1):
             file.writelines(bookings)
 
         print("Booking changed successfully!")
+        Renter_main_page(username1)
     else:
         print("Invalid booking number.")
+        Renter_main_page(username1)
 
 
 users=load_users()
