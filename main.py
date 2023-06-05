@@ -22,6 +22,24 @@ def save_booking(username1, hall_type, time_slot, date_day):
         file.write("-------------------------\n")
         return
 
+def add_hall(choice_of_NP, num_hall):
+    # Read the existing number of halls from the file
+    with open("hall.txt", "r") as file:
+        existing_halls = file.readlines()
+    
+    # Calculate the new total number of halls
+    total_halls = len(existing_halls) // 3 + num_hall
+
+    # Write the new number of halls to the file
+    with open("hall.txt", "a") as file:
+        for hall_number in range(total_halls - num_hall + 1, total_halls + 1):
+            file.write(f"Type of hall: {choice_of_NP}\n")
+            file.write(f"Hall Number: {hall_number}\n")
+            file.write("-------------------------\n")
+
+    print(f"{num_hall} halls added to {choice_of_NP} successfully.")
+    print(f"Total halls created: {total_halls}")
+
 def menu():
     print("Hi, Choose the option to continue:")
     print("1|Login  2|Register  3|Admin")
@@ -68,7 +86,58 @@ def Renter_main_page(username1):
                 return
         elif choice==4:
             change_booking(username1)
+        elif choice==5:
+            print('LogOut Successful')
+            menu()
             
+def admin_panel():
+    print('Please choose an option to continue:')
+    print('1.Create Hall')
+    print('2. View History')
+    print('3. Update Hall info')
+    print('4. Delete Old Renter')
+    print('5. LogOut')
+    choice=int(input("Enter your choice: "))
+    if choice==1:
+        create_hall()
+    elif choice==5:
+        print('LogOut Successful')
+        return
+    else:
+        print('Invalid choice. Please Try Again')
+        menu()
+
+def create_hall():
+    num_normal = 0
+    num_premium = 0
+    choice_of_NP= str(input('Type of Hall to Create (Normal[N])/(Premium[P]): '))
+    num_hall= int(input('Number of hall: '))
+    if choice_of_NP.upper() == 'N':
+        num_normal+=num_hall
+        print(choice_of_NP, ':',num_normal)
+        choice_of_NP ='Normal'
+        confirm_add=str(input('Press Y to confirm to add: '))
+        if confirm_add.upper() == 'Y':
+            add_hall(choice_of_NP, num_normal)
+        else:
+            print('Back To Admin Panel')
+            return
+    elif choice_of_NP.upper()=='P':
+        num_premium+=num_hall
+        print(choice_of_NP, ':',num_premium)
+        choice_of_NP ='Premium'
+        confirm_add=str(input('Press Y to confirm to add: '))
+        if confirm_add.upper() == 'Y':
+            add_hall(choice_of_NP, num_premium)
+        else:
+            print('Back To Admin Panel')
+            return
+    else:
+        print('Invalid,please try again')
+        admin_panel()
+
+
+
 def Register():
     newuser=input('Enter new username: ')
     if newuser in users:
@@ -86,6 +155,7 @@ def Admin():
     adminpass=input('Enter password: ')
     if adminname=='admin' and adminpass=='admin123':
         print('Welcome back Admin')
+        admin_panel()
     else:
         print("Wrong pass or name")
         return()

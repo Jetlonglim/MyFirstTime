@@ -1,0 +1,21 @@
+Type of hall: Normal
+Hall Number: 1
+-------------------------
+Type of hall: Normal
+Hall Number: 2
+-------------------------
+Type of hall: Normal
+Hall Number: 3
+-------------------------
+Type of hall: Normal
+Hall Number: 4
+-------------------------
+Type of hall: Normal
+Hall Number: 5
+-------------------------
+Type of hall: Premium
+Hall Number: 6
+-------------------------
+Type of hall: Premium
+Hall Number: 7
+-------------------------
