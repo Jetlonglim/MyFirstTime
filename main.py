@@ -100,6 +100,8 @@ def admin_panel():
     choice=int(input("Enter your choice: "))
     if choice==1:
         create_hall()
+    elif choice==2:
+        view_history()
     elif choice==5:
         print('LogOut Successful')
         return
@@ -136,7 +138,27 @@ def create_hall():
         print('Invalid,please try again')
         admin_panel()
 
+def view_history():
+    with open("booking.txt", "r") as file:
+        bookings = file.readlines()
 
+    if len(bookings) == 0:
+        print("No bookings found in the history.")
+        admin_panel()
+    else:
+        print("Booking History:")
+        print("-------------------------")
+        for i in range(0, len(bookings), 5):
+            username = bookings[i].strip().split(": ")[1]
+            hall_type = bookings[i + 1].strip().split(": ")[1]
+            time_slot = bookings[i + 2].strip().split(": ")[1]
+            date = bookings[i + 3].strip().split(": ")[1]
+            print(f"Username: {username}")
+            print(f"Hall Type: {hall_type}")
+            print(f"Time Slot: {time_slot}")
+            print(f"Date: {date}")
+            print("-------------------------")
+    admin_panel()
 
 def Register():
     newuser=input('Enter new username: ')
