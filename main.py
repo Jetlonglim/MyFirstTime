@@ -102,6 +102,8 @@ def admin_panel():
         create_hall()
     elif choice==2:
         view_history()
+    elif choice==4:
+        delete_renter()
     elif choice==5:
         print('LogOut Successful')
         return
@@ -159,6 +161,41 @@ def view_history():
             print(f"Date: {date}")
             print("-------------------------")
     admin_panel()
+
+def delete_renter():
+    try:
+        with open("renters.txt", "r") as file:
+            renters = file.readlines()
+
+        if len(renters) == 0:
+            print("No renters found.")
+            admin_panel()
+
+        print("Current renter information:")
+        for renter in renters:
+            print(renter.strip())
+
+        delete_acc = input("Enter the username of the renter account you want to delete: ")
+        password = input("Enter the password for the renter account to confirm delete: ")
+
+        found = False
+        with open("renters.txt", "w") as file:
+            for renter in renters:
+                username, stored_password = renter.strip().split(":")
+                if username == delete_acc and password == stored_password:
+                    found = True
+                else:
+                    file.write(renter)
+
+        if found:
+            print(f"\nThe renter account '{delete_acc}' has been deleted.")
+            admin_panel()
+        else:
+            print(f"\nThe renter account '{delete_acc}' was not found or the password is incorrect.")
+            admin_panel()
+
+    except FileNotFoundError:
+        print("No renters found.")
 
 def Register():
     newuser=input('Enter new username: ')
