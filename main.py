@@ -22,7 +22,7 @@ def save_booking(username1, hall_type, time_slot, date_day):
         file.write("-------------------------\n")
         return
 
-def add_hall(choice_of_NP, num_hall):
+def add_hall(choice_of_NP, num_hall, price_hall):
     # Read the existing number of halls from the file
     with open("hall.txt", "r") as file:
         existing_halls = file.readlines()
@@ -35,6 +35,7 @@ def add_hall(choice_of_NP, num_hall):
         for hall_number in range(total_halls - num_hall + 1, total_halls + 1):
             file.write(f"Type of hall: {choice_of_NP}\n")
             file.write(f"Hall Number: {hall_number}\n")
+            file.write(f"Price of Hall: RM{price_hall}\n")
             file.write("-------------------------\n")
 
     print(f"{num_hall} halls added to {choice_of_NP} successfully.")
@@ -117,22 +118,24 @@ def create_hall():
     choice_of_NP= str(input('Type of Hall to Create (Normal[N])/(Premium[P]): '))
     num_hall= int(input('Number of hall: '))
     if choice_of_NP.upper() == 'N':
+        choice_N ='Normal'
         num_normal+=num_hall
-        print(choice_of_NP, ':',num_normal)
-        choice_of_NP ='Normal'
+        price_normal=100
+        print(choice_N, ':',num_normal, ': RM', price_normal)
         confirm_add=str(input('Press Y to confirm to add: '))
         if confirm_add.upper() == 'Y':
-            add_hall(choice_of_NP, num_normal)
+            add_hall(choice_N, num_normal, price_normal)
         else:
             print('Back To Admin Panel')
             return
     elif choice_of_NP.upper()=='P':
+        choice_P ='Premium'
         num_premium+=num_hall
-        print(choice_of_NP, ':',num_premium)
-        choice_of_NP ='Premium'
+        price_premium=200
+        print(choice_P, ':',num_premium, ': RM', price_premium)
         confirm_add=str(input('Press Y to confirm to add: '))
         if confirm_add.upper() == 'Y':
-            add_hall(choice_of_NP, num_premium)
+            add_hall(choice_P, num_premium, price_premium)
         else:
             print('Back To Admin Panel')
             return
@@ -161,6 +164,7 @@ def view_history():
             print(f"Date: {date}")
             print("-------------------------")
     admin_panel()
+
 
 def delete_renter():
     try:
