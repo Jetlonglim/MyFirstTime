@@ -13,10 +13,11 @@ def save_users(users):
         lines = [f"{username}:{password}\n" for username, password in users.items()]
         file.writelines(lines)
 
-def save_booking(username1, hall_type, time_slot, date_day):
+def save_booking(username1, hall_type, hall_number, time_slot, date_day):
     with open("booking.txt", "a") as file:
         file.write(f"Username: {username1}\n")
         file.write(f"Hall Type: {hall_type}\n")
+        file.write(f"Hall Number: {hall_number}\n")
         file.write(f"Time Slot: {time_slot}\n")
         file.write(f"Date: {date_day}\n")
         file.write("-------------------------\n")
@@ -270,28 +271,56 @@ def date(username1,info, hall_type, time_slot):
     if date_choice == 1:
         date_day = 'Monday'
         print('Your hall will be rented on Monday')
+        hall_number(username1,info, hall_type, time_slot,date_day)
     elif date_choice == 2:
         date_day = 'Tuesday'
         print('Your hall will be rented on Tuesday')
+        hall_number(username1,info, hall_type, time_slot,date_day)
     elif date_choice == 3:
         date_day = 'Wednesday'
         print('Your hall will be rented on Wednesday')
+        hall_number(username1,info, hall_type, time_slot,date_day)
     elif date_choice == 4:
         date_day = 'Thursday'
         print('Your hall will be rented on Thursday')
+        hall_number(username1,info, hall_type, time_slot,date_day)
     elif date_choice == 5:
         date_day = 'Friday'
         print('Your hall will be rented on Friday')
+        hall_number(username1,info, hall_type, time_slot,date_day)
     else:
         print('Invalid')
         return
     
+def hall_number(username1, info, hall_type, time_slot, date_day):
+    # Check hall availability
+    available_halls = []
+    with open("hall.txt", "r") as file:
+        lines = file.readlines()
+        for i in range(0, len(lines), 4):
+            hall_info = lines[i:i + 4]
+            if hall_info[0].startswith(f"Type of hall: {hall_type}"):
+                hall_number = hall_info[1].split(": ")[-1].strip()
+                available_halls.append(hall_number)
+
+    if len(available_halls) == 0:
+        print(f"No {hall_type} halls are currently available.")
+        return
+
+    print(f"Available {hall_type} halls: {', '.join(available_halls)}")
+
+    hall_number = input("Enter the hall number you want to book: ")
+    if hall_number not in available_halls:
+        print("Invalid hall number. Please try again.")
+        return
+
     # Display the final choices
     print('\nBooking Details:')
     print(f'Hall Type: {hall_type}')
+    print(f'Hall Number: {hall_number}')
     print(f'Time Slot: {time_slot}')
     print(f'Date: {date_day}')
-    save_booking(username1, hall_type, time_slot, date_day)
+    save_booking(username1, hall_type, hall_number, time_slot, date_day)
     return
 
 def create_booking(username1):
