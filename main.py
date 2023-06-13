@@ -94,7 +94,7 @@ def Renter_main_page(username1):
             
 def admin_panel():
     print('Please choose an option to continue:')
-    print('1.Create Hall')
+    print('1. Create Hall')
     print('2. View History')
     print('3. Update Hall info')
     print('4. Delete Old Renter')
@@ -104,6 +104,8 @@ def admin_panel():
         create_hall()
     elif choice==2:
         view_history()
+    elif choice==3:
+        update_hall_info()
     elif choice==4:
         delete_renter()
     elif choice==5:
@@ -154,18 +156,70 @@ def view_history():
     else:
         print("Booking History:")
         print("-------------------------")
-        for i in range(0, len(bookings), 5):
+        for i in range(0, len(bookings), 6):
             username = bookings[i].strip().split(": ")[1]
             hall_type = bookings[i + 1].strip().split(": ")[1]
-            time_slot = bookings[i + 2].strip().split(": ")[1]
-            date = bookings[i + 3].strip().split(": ")[1]
+            hall_number = bookings[i + 2].strip().split(": ")[1]
+            time_slot = bookings[i + 3].strip().split(": ")[1]
+            date = bookings[i + 4].strip().split(": ")[1]
             print(f"Username: {username}")
             print(f"Hall Type: {hall_type}")
+            print(f"Hall Number: {hall_number}")
             print(f"Time Slot: {time_slot}")
             print(f"Date: {date}")
             print("-------------------------")
     admin_panel()
 
+def update_hall_info():
+    choice = input("Which one would like to update: Timeslot[T] / Price of Hall[P]: ").upper()
+
+    if choice == 'P':
+        hall_type = input("Which hall would you like to update Normal[N]/Premium[P]: ").upper()
+
+        if hall_type == 'N':
+            new_price = input("Enter the new price for Normal halls: ")
+            update_price('Normal', new_price)
+            print(f"The price of Normal halls has been updated to {new_price}.")
+        elif hall_type == 'P':
+            new_price = input("Enter the new price for Premium halls: ")
+            update_price('Premium', new_price)
+            print(f"The price of Premium halls has been updated to {new_price}.")
+        else:
+            print("Invalid choice.")
+            admin_panel()
+    elif choice == 'T':
+        day = input("Enter the day you want to update (e.g., Monday, Tuesday, etc.): ")
+        new_timeslot = input("Enter the new timeslot for the day: ")
+        update_timeslot(day, new_timeslot)
+        print(f"The timeslot for {day} has been updated to {new_timeslot}.")
+    else:
+        print("Invalid choice.")
+
+    admin_panel()
+
+def update_timeslot(day, new_timeslot):
+    with open("timeslots.txt", "r") as file:
+        lines = file.readlines()
+
+    with open("timeslots.txt", "w") as file:
+        for line in lines:
+            if line.startswith(f"{day}:"):
+                file.write(f"{day}: {new_timeslot}\n")
+            else:
+                file.write(line)
+
+def update_price(hall_type, new_price):
+    with open("hall.txt", "r") as file:
+        lines = file.readlines()
+
+    with open("hall.txt", "w") as file:
+        for i, line in enumerate(lines):
+            if line.startswith(f"Type of hall: {hall_type}"):
+                if lines[i + 2].startswith("Price of Hall:"):
+                    original_price = lines[i + 2].split(": ")[1].strip()
+                    lines[i + 2] = f"Price of Hall: RM{new_price}\n"
+                    print(f"The price of {hall_type} hall has been updated from RM{original_price} to RM{new_price}.")
+            file.write(line)
 
 def delete_renter():
     try:
@@ -201,6 +255,7 @@ def delete_renter():
 
     except FileNotFoundError:
         print("No renters found.")
+    admin_panel()
 
 def Register():
     newuser=input('Enter new username: ')
@@ -371,59 +426,63 @@ def change_booking(username1):
         return
 
     booking_num = int(input("Enter the booking number you want to change: "))
-    if booking_num > 0 and booking_num <= len(user_bookings):
-        booking_index = user_bookings[booking_num - 1]
-        hall_change = int(input("Enter new hall type ([1]Normal/[2]Premium): "))
-        if hall_change==1:
-            hall_type='Normal'
-        elif hall_change==2:
-            hall_type='Premium'
-        else:
-            print('Invalid')
-            Renter_main_page(username1)
-            
-        time_change = int(input("Enter new time slot ([1]10am-12pm, [2]12pm-2pm, [3]2pm-4pm, [4]4pm-6pm, [5]6pm-8pm): "))
-        if time_change==1:
-            time_slot='10am-12pm'
-        elif time_change==2:
-            time_slot='12pm-2pm'
-        elif time_change==3:
-            time_slot='2pm-4pm'
-        elif time_change==4:
-            time_slot='4pm-6pm'
-        elif time_change==5:
-            time_slot='6pm-8pm'
-        else:
-            print('Invalid')
-            Renter_main_page(username1)
-            
-        date_change = int(input("Enter new date ([1]Monday, [2]Tuesday, [3]Wednesday, [4]Thursday, [5]Friday): "))
-        if date_change==1:
-            date_day='Monday'
-        elif date_change==2:
-            date_day='Tuesday'
-        elif date_change==3:
-            date_day='Wednesday'
-        elif date_change==4:
-            date_day='Thursday'
-        elif date_change==5:
-            date_day='Friday'
-        else:
-            print('Invalid')
-            Renter_main_page(username1)
-
-        bookings[booking_index+1] = f"Hall Type: {hall_type}\n"
-        bookings[booking_index+2] = f"Time Slot: {time_slot}\n"
-        bookings[booking_index+3] = f"Date: {date_day}\n"
-
-        with open("booking.txt", "w") as file:
-            file.writelines(bookings)
-
-        print("Booking changed successfully!")
-        Renter_main_page(username1)
-    else:
+    if booking_num <= 0 or booking_num > len(user_bookings):
         print("Invalid booking number.")
-        Renter_main_page(username1)
+        return
+
+    booking_index = user_bookings[booking_num - 1]
+
+    hall_change = int(input("Enter new hall type ([1]Normal/[2]Premium): "))
+    hall_type = ""
+    if hall_change == 1:
+        hall_type = 'Normal'
+    elif hall_change == 2:
+        hall_type = 'Premium'
+    else:
+        print('Invalid hall type.')
+        return
+
+    time_change = int(input("Enter new time slot ([1]10am-12pm, [2]12pm-2pm, [3]2pm-4pm, [4]4pm-6pm, [5]6pm-8pm): "))
+    time_slot = ""
+    if time_change == 1:
+        time_slot = '10am-12pm'
+    elif time_change == 2:
+        time_slot = '12pm-2pm'
+    elif time_change == 3:
+        time_slot = '2pm-4pm'
+    elif time_change == 4:
+        time_slot = '4pm-6pm'
+    elif time_change == 5:
+        time_slot = '6pm-8pm'
+    else:
+        print('Invalid time slot.')
+        return
+
+    date_change = int(input("Enter new date ([1]Monday, [2]Tuesday, [3]Wednesday, [4]Thursday, [5]Friday): "))
+    date_day = ""
+    if date_change == 1:
+        date_day = 'Monday'
+    elif date_change == 2:
+        date_day = 'Tuesday'
+    elif date_change == 3:
+        date_day = 'Wednesday'
+    elif date_change == 4:
+        date_day = 'Thursday'
+    elif date_change == 5:
+        date_day = 'Friday'
+    else:
+        print('Invalid date.')
+        return
+
+    bookings[booking_index+1] = f"Hall Type: {hall_type}\n"
+    bookings[booking_index+3] = f"Time Slot: {time_slot}\n"
+    bookings[booking_index+4] = f"Date: {date_day}\n"
+
+    with open("booking.txt", "w") as file:
+        file.writelines(bookings)
+
+    print("Booking changed successfully!")
+
 
 
 users=load_users()
