@@ -1,18 +1,18 @@
 Type of hall: Normal
 Hall Number: 1
-Price of Hall: RM100
+Price of Hall: RM110
 -------------------------
 Type of hall: Normal
 Hall Number: 2
-Price of Hall: RM100
+Price of Hall: RM110
 -------------------------
 Type of hall: Normal
 Hall Number: 3
-Price of Hall: RM100
+Price of Hall: RM110
 -------------------------
 Type of hall: Normal
 Hall Number: 4
-Price of Hall: RM100
+Price of Hall: RM110
 -------------------------
 Type of hall: Premium
 Hall Number: 6
