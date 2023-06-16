@@ -13,6 +13,7 @@ def save_users(users):
         lines = [f"{username}:{password}\n" for username, password in users.items()]
         file.writelines(lines)
 
+# Function to save booking detail to file
 def save_booking(username1, hall_type, hall_number, time_slot, date_day):
     with open("booking.txt", "a") as file:
         file.write(f"Username: {username1}\n")
@@ -23,6 +24,113 @@ def save_booking(username1, hall_type, hall_number, time_slot, date_day):
         file.write("-------------------------\n")
         return
 
+#--------------------------MAIN MENU--------------------------------
+def menu():
+    print("Hi, Choose the option to continue:")
+    print("1|Login  2|Register  3|Admin  4|Exit")
+    x=int(input("Enter Number to continue: "))
+    if x == 1:
+        Login()
+    elif x==2:
+        Register()
+    elif x==3:
+        Admin()
+    elif x==4:
+        exit()
+    else:
+        print('Invalid option, please try again')
+        menu()
+
+#----------------------LOGIN---------------------------
+def Login():
+    print('------ Welcome To Renter Login ------')
+    username1=input("Enter username: ")
+    password1=input("Enter Password:")
+    if username1 in users and users[username1]==password1:
+        print('Login Successful')
+        Renter_main_page(username1)
+    else:
+        print('Incorrect username or password')
+        menu()
+
+#-------------------------RENTER MAIN PAGE-------------------------
+def Renter_main_page(username1):
+        print('Please choose an option to continue: ')
+        print('1. Create Booking')
+        print('2. View Timeslot')
+        print('3. Change Password')
+        print('4. Change Booking')
+        print('5. Logout')
+        choice=int(input("Enter your choice: "))
+        if choice==1:
+            create_booking(username1)
+        elif choice==2:
+            view_timeslot(username1)
+        elif choice==3:
+            change_password(username1)
+        elif choice==4:
+            change_booking(username1)
+        elif choice==5:
+            print('LogOut Successful')
+            menu()
+
+#----------------------ADMIN PANEL-----------------------------            
+def admin_panel():
+    print('Please choose an option to continue:')
+    print('1. Create Hall')
+    print('2. View History')
+    print('3. Update Hall info')
+    print('4. Delete Old Renter')
+    print('5. LogOut')
+    choice=int(input("Enter your choice: "))
+    if choice==1:
+        create_hall()
+    elif choice==2:
+        view_history()
+    elif choice==3:
+        update_hall_info()
+    elif choice==4:
+        delete_renter()
+    elif choice==5:
+        print('LogOut Successful')
+        menu()
+    else:
+        print('Invalid choice. Please Try Again')
+        menu()
+
+#1. Create Hall
+def create_hall():
+    num_normal = 0
+    num_premium = 0
+    choice_of_NP= str(input('Type of Hall to Create (Normal[N])/(Premium[P]): '))
+    num_hall= int(input('Number of hall: '))
+    if choice_of_NP.upper() == 'N':
+        choice_N ='Normal'
+        num_normal+=num_hall
+        price_normal=100
+        print(choice_N, ':',num_normal, ': RM', price_normal)
+        confirm_add=str(input('Press Y to confirm to add: '))
+        if confirm_add.upper() == 'Y':
+            add_hall(choice_N, num_normal, price_normal)
+        else:
+            print('Back To Admin Panel')
+            admin_panel()
+    elif choice_of_NP.upper()=='P':
+        choice_P ='Premium'
+        num_premium+=num_hall
+        price_premium=200
+        print(choice_P, ':',num_premium, ': RM', price_premium)
+        confirm_add=str(input('Press Y to confirm to add: '))
+        if confirm_add.upper() == 'Y':
+            add_hall(choice_P, num_premium, price_premium)
+        else:
+            print('Back To Admin Panel')
+            admin_panel()
+    else:
+        print('Invalid,please try again')
+        admin_panel()
+
+# Function to add more quantity of hall 
 def add_hall(choice_of_NP, num_hall, price_hall):
     # Read the existing number of halls from the file
     with open("hall.txt", "r") as file:
@@ -42,110 +150,7 @@ def add_hall(choice_of_NP, num_hall, price_hall):
     print(f"{num_hall} halls added to {choice_of_NP} successfully.")
     print(f"Total halls created: {total_halls}")
 
-def menu():
-    print("Hi, Choose the option to continue:")
-    print("1|Login  2|Register  3|Admin")
-    x=int(input("Enter Number to continue: "))
-    if x == 1:
-        Login()
-    elif x==2:
-        Register()
-    elif x==3:
-        Admin()
-    else:
-        print('Invalid option, please try again')
-
-def Login():
-    username1=input("Enter username: ")
-    password1=input("Enter Password:")
-    if username1 in users and users[username1]==password1:
-        print('Login Successful')
-        Renter_main_page(username1)
-    else:
-        print('Incorrect username or password')
-
-def Renter_main_page(username1):
-        print('Please choose an option to continue: ')
-        print('1. Create Booking')
-        print('2. View Timeslot')
-        print('3. Change Password')
-        print('4. Change Booking')
-        print('5. Logout')
-        choice=int(input("Enter your choice: "))
-        if choice==1:
-            create_booking(username1)
-        elif choice==2:
-            view_timeslot()
-        elif choice==3:
-            change_password=str(input('Do you want to change password? (Y/N): '))
-            if change_password.upper()=='Y':
-                new_password=input('Enter new password: ')
-                users[username1]=new_password
-                save_users(users)
-                print('Password changed successfully')
-            else:
-                print('Invalid option. Please try again')
-                return
-        elif choice==4:
-            change_booking(username1)
-        elif choice==5:
-            print('LogOut Successful')
-            menu()
-            
-def admin_panel():
-    print('Please choose an option to continue:')
-    print('1. Create Hall')
-    print('2. View History')
-    print('3. Update Hall info')
-    print('4. Delete Old Renter')
-    print('5. LogOut')
-    choice=int(input("Enter your choice: "))
-    if choice==1:
-        create_hall()
-    elif choice==2:
-        view_history()
-    elif choice==3:
-        update_hall_info()
-    elif choice==4:
-        delete_renter()
-    elif choice==5:
-        print('LogOut Successful')
-        return
-    else:
-        print('Invalid choice. Please Try Again')
-        menu()
-
-def create_hall():
-    num_normal = 0
-    num_premium = 0
-    choice_of_NP= str(input('Type of Hall to Create (Normal[N])/(Premium[P]): '))
-    num_hall= int(input('Number of hall: '))
-    if choice_of_NP.upper() == 'N':
-        choice_N ='Normal'
-        num_normal+=num_hall
-        price_normal=100
-        print(choice_N, ':',num_normal, ': RM', price_normal)
-        confirm_add=str(input('Press Y to confirm to add: '))
-        if confirm_add.upper() == 'Y':
-            add_hall(choice_N, num_normal, price_normal)
-        else:
-            print('Back To Admin Panel')
-            return
-    elif choice_of_NP.upper()=='P':
-        choice_P ='Premium'
-        num_premium+=num_hall
-        price_premium=200
-        print(choice_P, ':',num_premium, ': RM', price_premium)
-        confirm_add=str(input('Press Y to confirm to add: '))
-        if confirm_add.upper() == 'Y':
-            add_hall(choice_P, num_premium, price_premium)
-        else:
-            print('Back To Admin Panel')
-            return
-    else:
-        print('Invalid,please try again')
-        admin_panel()
-
+#2. View History
 def view_history():
     with open("booking.txt", "r") as file:
         bookings = file.readlines()
@@ -170,6 +175,7 @@ def view_history():
             print("-------------------------")
     admin_panel()
 
+#3.Update Hall Info Timeslot/Price
 def update_hall_info():
     choice = input("Which one would like to update: Timeslot[T] / Price of Hall[P]: ").upper()
 
@@ -185,7 +191,7 @@ def update_hall_info():
             update_price('Premium', new_price)
             print(f"The price of Premium halls has been updated to {new_price}.")
         else:
-            print("Invalid choice.")
+            print("--------------Invalid choice.-----------------")
             admin_panel()
     elif choice == 'T':
         day = input("Enter the day you want to update (e.g., Monday, Tuesday, etc.): ")
@@ -193,10 +199,10 @@ def update_hall_info():
         update_timeslot(day, new_timeslot)
         print(f"The timeslot for {day} has been updated to {new_timeslot}.")
     else:
-        print("Invalid choice.")
-
+        print("--------------------Invalid choice.---------------------------")
     admin_panel()
 
+#3. Update Hall Info Timeslot
 def update_timeslot(day, new_timeslot):
     with open("timeslots.txt", "r") as file:
         lines = file.readlines()
@@ -208,6 +214,7 @@ def update_timeslot(day, new_timeslot):
             else:
                 file.write(line)
 
+#3. Update Hall Info Price
 def update_price(hall_type, new_price):
     with open("hall.txt", "r") as file:
         lines = file.readlines()
@@ -221,6 +228,7 @@ def update_price(hall_type, new_price):
                     print(f"The price of {hall_type} hall has been updated from RM{original_price} to RM{new_price}.")
             file.write(line)
 
+#4. Delete Renter Account
 def delete_renter():
     try:
         with open("renters.txt", "r") as file:
@@ -254,31 +262,56 @@ def delete_renter():
             admin_panel()
 
     except FileNotFoundError:
-        print("No renters found.")
+        print("------------No renters found.----------------")
     admin_panel()
 
+#------------------REGISTER----------------------
 def Register():
     newuser=input('Enter new username: ')
     if newuser in users:
         print('Username already taken')
-        return
+        menu()
     newpass=input('Enter new pass: ')
     confirm_newpass=input('Enter confirm pass: ')
     if newpass==confirm_newpass:
         users[newuser]=newpass
         save_users(users)
         print('Registration Successful')
+        Login()
 
+#------------------------ADMIN / HOST--------------------------
 def Admin():
     adminname=input('Enter Admin name: ')
     adminpass=input('Enter password: ')
     if adminname=='admin' and adminpass=='admin123':
-        print('Welcome back Admin')
+        print('--------Welcome back Admin--------')
         admin_panel()
     else:
-        print("Wrong pass or name")
-        return()
+        print("---------Wrong pass or name------------")
+        menu()
 
+
+
+
+
+#------------------------RENTER FEATURE------------------------------
+
+#1. Create Booking
+def create_booking(username1):
+    info = ['Normal', 'Premium']
+
+    choice = input("Choose the option you want to start booking: (Y/N) ")
+    if choice.upper() == 'Y':
+        hall(username1,info)
+        Renter_main_page(username1)
+    elif choice.upper() == 'N':
+        print("-----------------Back to the main page----------------")
+        Renter_main_page(username1)
+    else:
+        print('--------------Invalid. Try again------------------')
+        Renter_main_page(username1)
+
+#Hall Choices
 def hall(username1,info):
     hall_choice = int(input('1. Normal | 2. Premium: '))
     if hall_choice == 1:
@@ -290,10 +323,10 @@ def hall(username1,info):
         print('Your type of hall is premium')
         time(username1,info, hall_type)
     else:
-        print('Invalid')
-        return
+        print('-------Invalid--------')
+        Renter_main_page(username1)
 
-
+#Time Choices
 def time(username1,info, hall_type):
     time_choice = int(input('1. 10am-12pm | 2. 12pm-2pm | 3. 2pm-4pm | 4. 4pm-6pm | 5. 6pm-8pm : '))
     if time_choice == 1:
@@ -317,10 +350,10 @@ def time(username1,info, hall_type):
         print('Your rented hall will start at 6pm-8pm')
         date(username1,info, hall_type, time_slot)            
     else:
-        print('Invalid')
-        return
+        print('-------Invalid--------')
+        Renter_main_page(username1)
 
-
+#Date Choices
 def date(username1,info, hall_type, time_slot):
     date_choice = int(input('1. Monday | 2. Tuesday | 3. Wednesday | 4. Thursday | 5. Friday: '))
     if date_choice == 1:
@@ -344,9 +377,10 @@ def date(username1,info, hall_type, time_slot):
         print('Your hall will be rented on Friday')
         hall_number(username1,info, hall_type, time_slot,date_day)
     else:
-        print('Invalid')
-        return
-    
+        print('-------Invalid--------')
+        Renter_main_page(username1)
+
+#Hall Number Choices 
 def hall_number(username1, info, hall_type, time_slot, date_day):
     # Check hall availability
     available_halls = []
@@ -359,15 +393,15 @@ def hall_number(username1, info, hall_type, time_slot, date_day):
                 available_halls.append(hall_number)
 
     if len(available_halls) == 0:
-        print(f"No {hall_type} halls are currently available.")
-        return
+        print(f"----------No {hall_type} halls are currently available.----------")
+        Renter_main_page(username1)
 
-    print(f"Available {hall_type} halls: {', '.join(available_halls)}")
+    print(f"--------Available {hall_type} halls: {', '.join(available_halls)}----------")
 
     hall_number = input("Enter the hall number you want to book: ")
     if hall_number not in available_halls:
-        print("Invalid hall number. Please try again.")
-        return
+        print("-----------------Invalid hall number. Please try again.--------------------")
+        Renter_main_page(username1)
 
     # Display the final choices
     print('\nBooking Details:')
@@ -376,38 +410,43 @@ def hall_number(username1, info, hall_type, time_slot, date_day):
     print(f'Time Slot: {time_slot}')
     print(f'Date: {date_day}')
     save_booking(username1, hall_type, hall_number, time_slot, date_day)
-    return
+    Renter_main_page(username1)
 
-def create_booking(username1):
-    info = ['Normal', 'Premium']
-
-    choice = input("Choose the option you want to start booking: (Y/N) ")
-    if choice.upper() == 'Y':
-        hall(username1,info)
-        Renter_main_page(username1)
-    elif choice.upper() == 'N':
-        print("Back to the main page")
-        return
-    else:
-        print('Invalid. Try again')
-        return
-
-def view_timeslot():
+#2. View Timeslot 
+def view_timeslot(username1):
     try:
         with open("timeslots.txt", "r") as file:
             timeslots = file.read()
             print(timeslots)
+            Renter_main_page(username1)
     except FileNotFoundError:
-        print("Timeslot data not found.")
-        return
+        print("----------------Timeslot data not found.----------------")
+        Renter_main_page(username1)
 
+#3. Change Renter Password
+def change_password(username1):
+    change_password=str(input('Do you want to change password? (Y/N): '))
+    if change_password.upper()=='Y':
+        new_password=input('Enter new password: ')
+        users[username1]=new_password
+        save_users(users)
+        print('--------------Password changed successfully---------------')
+        Renter_main_page(username1)
+    elif change_password.upper()=='N':
+        print('--------------Back to Main Page------------------')
+        Renter_main_page(username1)           
+    else:
+        print('------------Invalid Option, Please Try Again------------')
+        Renter_main_page(username1)
+
+#4. Change Booking Detail by Renters
 def change_booking(username1):
     with open("booking.txt", "r") as file:
         bookings = file.readlines()
 
     if not bookings:
-        print("No bookings found.")
-        return
+        print("---------No bookings found.--------------")
+        Renter_main_page(username1)
 
     print("Your Bookings:")
     user_bookings = []
@@ -423,12 +462,12 @@ def change_booking(username1):
 
     if not user_bookings:
         print("You have no bookings.")
-        return
+        Renter_main_page(username1)
 
     booking_num = int(input("Enter the booking number you want to change: "))
     if booking_num <= 0 or booking_num > len(user_bookings):
-        print("Invalid booking number.")
-        return
+        print("---------------Invalid booking number.-----------------")
+        Renter_main_page(username1)
 
     booking_index = user_bookings[booking_num - 1]
 
@@ -439,8 +478,8 @@ def change_booking(username1):
     elif hall_change == 2:
         hall_type = 'Premium'
     else:
-        print('Invalid hall type.')
-        return
+        print('-------------Invalid hall type.----------------')
+        Renter_main_page(username1)
 
     time_change = int(input("Enter new time slot ([1]10am-12pm, [2]12pm-2pm, [3]2pm-4pm, [4]4pm-6pm, [5]6pm-8pm): "))
     time_slot = ""
@@ -455,8 +494,8 @@ def change_booking(username1):
     elif time_change == 5:
         time_slot = '6pm-8pm'
     else:
-        print('Invalid time slot.')
-        return
+        print('---------Invalid time slot.-------------')
+        Renter_main_page(username1)
 
     date_change = int(input("Enter new date ([1]Monday, [2]Tuesday, [3]Wednesday, [4]Thursday, [5]Friday): "))
     date_day = ""
@@ -471,8 +510,8 @@ def change_booking(username1):
     elif date_change == 5:
         date_day = 'Friday'
     else:
-        print('Invalid date.')
-        return
+        print('-------------Invalid date.------------')
+        Renter_main_page(username1)
 
     bookings[booking_index+1] = f"Hall Type: {hall_type}\n"
     bookings[booking_index+3] = f"Time Slot: {time_slot}\n"
@@ -481,8 +520,8 @@ def change_booking(username1):
     with open("booking.txt", "w") as file:
         file.writelines(bookings)
 
-    print("Booking changed successfully!")
-
+    print("---------------Booking changed successfully!------------------")
+    Renter_main_page(username1)
 
 
 users=load_users()

@@ -11,8 +11,8 @@ Time Slot: 10am-12pm
 Date: Monday
 -------------------------
 Username: renter1
-Hall Type: Normal
+Hall Type: Premium
 Hall Number: 1
 Time Slot: 10am-12pm
-Date: Monday
+Date: Thursday
 -------------------------
