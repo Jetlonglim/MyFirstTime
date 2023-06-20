@@ -157,7 +157,7 @@ def add_hall(choice_of_NP, num_hall, price_hall):
         existing_halls = file.readlines()
     
     # Calculate the new total number of halls
-    total_halls = len(existing_halls) // 3 + num_hall
+    total_halls = len(existing_halls) // 4 + num_hall
 
     # Write the new number of halls to the file
     with open("hall.txt", "a") as file:
