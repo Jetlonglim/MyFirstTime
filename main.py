@@ -26,20 +26,25 @@ def save_booking(username1, hall_type, hall_number, time_slot, date_day):
 
 #--------------------------MAIN MENU--------------------------------
 def menu():
-    print("Hi, Choose the option to continue:")
-    print("1|Login  2|Register  3|Admin  4|Exit")
-    x=int(input("Enter Number to continue: "))
-    if x == 1:
-        Login()
-    elif x==2:
-        Register()
-    elif x==3:
-        Admin()
-    elif x==4:
-        exit()
-    else:
+    try:
+        print("Hi, Choose the option to continue:")
+        print("1|Login  2|Register  3|Admin  4|Exit")
+        x=int(input("Enter Number to continue: "))
+        if x == 1:
+            Login()
+        elif x==2:
+            Register()
+        elif x==3:
+            Admin()
+        elif x==4:
+            exit()
+        else:
+            print('Invalid option, please try again')
+            menu()
+    except:
         print('Invalid option, please try again')
         menu()
+    
 
 #----------------------LOGIN---------------------------
 def Login():
@@ -55,48 +60,62 @@ def Login():
 
 #-------------------------RENTER MAIN PAGE-------------------------
 def Renter_main_page(username1):
-        print('Please choose an option to continue: ')
-        print('1. Create Booking')
-        print('2. View Timeslot')
-        print('3. Change Password')
-        print('4. Change Booking')
-        print('5. Logout')
-        choice=int(input("Enter your choice: "))
-        if choice==1:
-            create_booking(username1)
-        elif choice==2:
-            view_timeslot(username1)
-        elif choice==3:
-            change_password(username1)
-        elif choice==4:
-            change_booking(username1)
-        elif choice==5:
-            print('LogOut Successful')
-            menu()
+        try:
+            print('Please choose an option to continue: ')
+            print('1. Create Booking')
+            print('2. View Timeslot')
+            print('3. Change Password')
+            print('4. Change Booking')
+            print('5. Logout')
+            choice=int(input("Enter your choice: "))
+            if choice==1:
+                create_booking(username1)
+            elif choice==2:
+                view_timeslot(username1)
+            elif choice==3:
+                change_password(username1)
+            elif choice==4:
+                change_booking(username1)
+            elif choice==5:
+                print('LogOut Successful')
+                menu()
+            else:
+                print('Invalid choice. Please Try Again')
+                Renter_main_page(username1)
+        except:
+            print('Invalid choice. Please Try Again')
+            Renter_main_page(username1)
+        
+
 
 #----------------------ADMIN PANEL-----------------------------            
 def admin_panel():
-    print('Please choose an option to continue:')
-    print('1. Create Hall')
-    print('2. View History')
-    print('3. Update Hall info')
-    print('4. Delete Old Renter')
-    print('5. LogOut')
-    choice=int(input("Enter your choice: "))
-    if choice==1:
-        create_hall()
-    elif choice==2:
-        view_history()
-    elif choice==3:
-        update_hall_info()
-    elif choice==4:
-        delete_renter()
-    elif choice==5:
-        print('LogOut Successful')
-        menu()
-    else:
+    try:
+        print('Please choose an option to continue:')
+        print('1. Create Hall')
+        print('2. View History')
+        print('3. Update Hall info')
+        print('4. Delete Old Renter')
+        print('5. LogOut')
+        choice=int(input("Enter your choice: "))
+        if choice==1:
+            create_hall()
+        elif choice==2:
+            view_history()
+        elif choice==3:
+            update_hall_info()
+        elif choice==4:
+            delete_renter()
+        elif choice==5:
+            print('LogOut Successful')
+            menu()
+        else:
+            print('Invalid choice. Please Try Again')
+            admin_panel()
+    except:
         print('Invalid choice. Please Try Again')
-        menu()
+        admin_panel()
+    
 
 #1. Create Hall
 def create_hall():
@@ -231,27 +250,34 @@ def update_price(hall_type, new_price):
 #4. Delete Renter Account
 def delete_renter():
     try:
+        # Read the renter accounts from the file
         with open("renters.txt", "r") as file:
             renters = file.readlines()
 
+        # Check if there are any renters
         if len(renters) == 0:
             print("No renters found.")
             admin_panel()
 
+        # Display current renter information
         print("Current renter information:")
         for renter in renters:
             print(renter.strip())
 
+        # Prompt for username and password to delete the account
         delete_acc = input("Enter the username of the renter account you want to delete: ")
         password = input("Enter the password for the renter account to confirm delete: ")
 
         found = False
+        # Open the file in write mode to update the renter accounts
         with open("renters.txt", "w") as file:
             for renter in renters:
+                # Split the renter account details into username and stored password
                 username, stored_password = renter.strip().split(":")
                 if username == delete_acc and password == stored_password:
                     found = True
                 else:
+                    # Write the renter account to the file if it's not the one to be deleted
                     file.write(renter)
 
         if found:
