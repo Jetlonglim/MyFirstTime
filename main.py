@@ -26,23 +26,25 @@ def save_booking(username1, hall_type, hall_number, time_slot, date_day):
 
 #--------------------------MAIN MENU--------------------------------
 def menu():
-    while True:
-        try:
-            print("Hi, Choose the option to continue:")
-            print("1|Login  2|Register  3|Admin  4|Exit")
-            x=int(input("Enter Number to continue: "))
-            if x == 1:
-                Login()
-            elif x==2:
-                Register()
-            elif x==3:
-                Admin()
-            elif x==4:
-                exit()
-            else:
-                print("Invalid choice. Please try again.\n")
-        except ValueError:
-            print("Invalid choice. Please enter a valid number.\n")
+    try:
+        print("Hi, Choose the option to continue:")
+        print("1|Login  2|Register  3|Admin  4|Exit")
+        x=int(input("Enter Number to continue: "))
+        if x == 1:
+            Login()
+        elif x==2:
+            Register()
+        elif x==3:
+            Admin()
+        elif x==4:
+            print('Exiting....')
+            exit()
+        else:
+            print("Invalid choice. Please try again.\n")
+            menu()
+    except ValueError:
+        print('Try again')
+        menu()
     
 
 #----------------------LOGIN---------------------------
